@@ -1,0 +1,169 @@
+
+<?php
+
+if($results){
+?>
+	<nav aria-label="breadcrumb ">
+ 
+  	<ol class="breadcrumb arr-right white-text">
+ 
+    <li class="breadcrumb-item "><a href="/" class="text-light">Home</a></li>
+ 
+    <li class="breadcrumb-item "><a href="/toram" class="text-light">Toram</a></li>
+ 
+    <li class="breadcrumb-item text-light active" aria-current="page">Guide</li>
+ 
+  	</ol>
+ 
+	</nav>
+
+	<center><h1>Toram Online Guide</h1></center>
+	<hr class="my-3 white">
+	<div class="row">
+
+
+	<?php
+	$count=0;
+	foreach ($results as $content) :
+	?>
+	<div class="col d-flex justify-content-center pt-4">
+		<div class="card text-dark" style="width: 18rem; height: 300px;">
+	 		<a href="<?php echo base_url(); ?>toram/guide/<?php echo $content->url; ?>">
+	 		<img class="card-img-top img-thumbnail" style="width: 100%; height: 200px;" src="https://www.javabow.com/img/<?php echo $content->image;?>" alt="Card image cap">
+	  		<div class="card-body">
+	    		<h5 class="card-title"><?php echo $content->judul;?></h5>
+	    	</a>
+	    	</div>
+		</div>
+		<br>
+	</div>
+
+	 
+	<?php endforeach; ?>
+	</div>
+	<center>
+	<?php 
+	echo $this->pagination->create_links();
+	?>
+	</center>
+<?php }elseif ($artikel) { ?>
+
+
+<?php 
+	foreach ($artikel as $content) :
+?>
+<nav aria-label="breadcrumb ">
+ 
+  <ol class="breadcrumb arr-right white-text">
+ 
+    <li class="breadcrumb-item "><a href="/" class="text-light">Home</a></li>
+ 
+    <li class="breadcrumb-item "><a href="/toram" class="text-light">Toram</a></li>
+ 
+    <li class="breadcrumb-item "><a href="/toram/guide" class="text-light">Guide</a></li>
+
+    <li class="breadcrumb-item text-light active" aria-current="page"><?php echo $content[2]; ?></li>
+ 
+  </ol>
+ 
+</nav>
+<center><div><?php date_default_timezone_set('Asia/Jakarta'); echo date("d-m-Y",strtotime($content[1])); ?></div></center>
+<center><h3><?php echo $content[2]; ?></h3></center>
+<hr class="my-3 white">
+<div class="text-justify">
+	<center><img class="" style="width: 300px;" src="https://www.javabow.com/img/<?php echo $content[4];?>" alt="<?php echo $content[2]; ?>"></center>
+	<?php echo $content[3]; ?>
+</div>
+<hr class="my-5 white">
+<?php $url = $content[5]; ?>
+<?php endforeach; ?>
+
+<center><h4>Artikel Lainnya</h4></center>
+<hr class="my-3 white">
+<div class="row">
+
+	<?php
+	$count=0;
+	foreach ($latest as $content) :
+	?>
+	<div class="col d-flex justify-content-center pt-4">
+		<div class="card text-dark" style="width: 18rem; height: 280px;">
+	 		<a href="<?php echo base_url(); ?>toram/guide/<?php echo $content->url; ?>">
+	 		<img class="card-img-top img-thumbnail" style="width: 100%; height: 200px;" src="https://www.javabow.com/img/<?php echo $content->image;?>" alt="Card image cap">
+	  		<div class="card-body">
+	    		<h5 class="card-title"><?php echo $content->judul;?></h5>
+	    	</a>
+	  		</div>
+		</div>
+		<br>
+	</div>
+
+	 
+	<?php endforeach;?>
+</div>
+
+<div class="row">
+	<div class="col-sm-12"><h4>Komentar (<?php if ($jumlahKomentar) {echo $jumlahKomentar;}else{echo '0';} ?>)</h4></div>
+</div>
+<?php if ($komentar): ?>
+	
+
+<?php foreach ($komentar as $content): ?>
+	
+<div class="row">
+	<div class="col-md-7">
+		<div class="card text-dark">
+			<h5 class="card-header"><?php echo $content[0]; ?> &nbsp;&nbsp; <?php echo $content[2]; ?></h5>
+			<div class="card-body">
+		    	<p class="card-text"><?php echo $content[1]; ?></p>
+		  	</div>
+		</div>
+		<br>
+	</div>
+</div>
+
+<?php endforeach ?>
+
+
+<?php endif ?>
+
+<hr class="my-5 white">
+<div class="row">
+<div class="col-md-7">
+<form action="<?php echo base_url(); ?>toram/guide/<?php echo $url; ?>#submitted" method="post">
+  <div class="form-group">
+    <label for="nama">Name <span class="text-danger">*</span></label>
+    <input type="text" class="form-control" id="var[0]" name="var[0]" placeholder="Nickname" required>
+  </div>
+  <div class="form-group">
+    <label for="komentar">Komentar <span class="text-danger">*</span></label>
+    <textarea class="form-control" id="var[1]" name="var[1]" rows="3" required></textarea>
+  </div>
+  <input type="hidden" id="var[2]" name="var[2]" value="<?php date_default_timezone_set('Asia/Jakarta'); echo date('d-m-Y'); ?>" /> 
+  <input type="hidden" id="var[3]" name="var[3]" value="<?php echo $url; ?>" />
+  <input type="hidden" id="var[4]" name="var[4]" value="" />
+  <div class="form-group">
+    <label for="komentar">Bahasa inggris pedang ? <span class="text-danger">* satu kata</span></label>
+    <input type="text" class="form-control" id="var[5]" name="var[5]" placeholder="Jawaban" required>
+  </div>
+  <?php if($error2) :?>
+  	<div class="alert alert-danger" role="alert">
+  		<?php echo $error2; ?>
+	</div>
+  <?php endif; ?>
+  <?php if($error1) :?>
+  	<div class="alert alert-danger" role="alert">
+  		<?php echo $error1; ?>
+	</div>
+  <?php endif; ?>
+  <input class="btn btn-primary" type="submit" value="Post">
+</form>
+</div>
+</div>
+<a name="submitted"></a>
+
+<?php }else{ ?>
+
+<center><p>Maaf, halaman yang anda cari tidak ada :(</p></center>
+
+<?php } ?>		
